@@ -8,27 +8,38 @@ const openai = new OpenAI({
 })
 
 export async function POST (req) {
-  const { category } = await req.json()
+  const { prompt } = await req.json()
 
+  54
   const response = await openai.chat.completions.create({
+
     model: 'gpt-3.5-turbo',
+
     stream: true,
+
     messages: [
+
       {
+
         role: 'user',
-        content: `Generate a set of trivia 5 questions about Geography in JSON format. Each question should have a title, answer, and an array of 4 options, as shown in the JSON example. Please provide 5 questions.
-            JSON example:
+
+        content: `Generate a set of trivia 5 questions about ${prompt}
+            following this JSON format
+
             [
-             {title: "What is the capital of France?", answer: "Paris", options: ["Paris", "London", "Berlin", "Madrid"]},
-             {title: "What is the capital of Spain?", answer: "Madrid", options: ["Paris", "London", "Berlin", "Madrid"]},
+
+             {"title": "question title", "answer": "correct aswer", "options": ["opt1", "opt2", "opt3", "opt4"]}
+
             ]`
+
       }
+
     ],
+
     max_tokens: 500,
-    temperature: 0, // you want absolute certainty for spell check
-    top_p: 1,
-    frequency_penalty: 1,
-    presence_penalty: 1
+
+    temperature: 0.2
+
   })
 
   const stream = OpenAIStream(response)

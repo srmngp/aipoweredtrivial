@@ -15,7 +15,7 @@ export default function Page({ params }) {
         async (c) => {
             const completion = await complete(c)
             if (!completion) return
-            console.log('completion', completion);
+            console.log(completion);
             setQuestions(JSON.parse(completion))
         },
         [complete]
